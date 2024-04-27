@@ -4,6 +4,7 @@
 # Video
 whisper/src/
 app/env/
+env/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
