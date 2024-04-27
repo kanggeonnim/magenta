@@ -3,11 +3,7 @@
 
 # Video
 whisper/src/
-app/env/
-<<<<<<< HEAD
 env/
-=======
->>>>>>> 772e8b32625d8bc5d06fcb8c1232671816e3c1f2
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
