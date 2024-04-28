@@ -42,7 +42,7 @@ tf.app.flags.DEFINE_string(
     'run_dir', None,
     'Path to the directory where the latest checkpoint will be loaded from.')
 tf.app.flags.DEFINE_string(
-    'bundle_file', None,
+    'bundle_file', './chord_pitches_improv.mag',
     'Path to the bundle file. If specified, this will take priority over '
     'run_dir, unless save_generator_bundle is True, in which case both this '
     'flag and run_dir are required')
@@ -55,10 +55,10 @@ tf.app.flags.DEFINE_string(
     'A short, human-readable text description of the bundle (e.g., training '
     'data, hyper parameters, etc.).')
 tf.app.flags.DEFINE_string(
-    'output_dir', '/tmp/improv_rnn/generated',
+    'output_dir', './tmp/improv_rnn/generated',
     'The directory where MIDI files will be saved to.')
 tf.app.flags.DEFINE_integer(
-    'num_outputs', 10,
+    'num_outputs', 1,
     'The number of lead sheets to generate. One MIDI file will be created for '
     'each.')
 tf.app.flags.DEFINE_integer(
@@ -83,27 +83,27 @@ tf.app.flags.DEFINE_string(
     'priming melody. If a primer melody is not specified, melodies will be '
     'generated from scratch.')
 tf.app.flags.DEFINE_boolean(
-    'render_chords', False,
+    'render_chords', True,
     'If true, the backing chords will also be rendered as notes in the output '
     'MIDI files.')
 tf.app.flags.DEFINE_float(
-    'qpm', None,
+    'qpm', 140,
     'The quarters per minute to play generated output at. If a primer MIDI is '
     'given, the qpm from that will override this flag. If qpm is None, qpm '
     'will default to 120.')
 tf.app.flags.DEFINE_float(
-    'temperature', 1.0,
+    'temperature', 0.9,
     'The randomness of the generated melodies. 1.0 uses the unaltered softmax '
     'probabilities, greater than 1.0 makes melodies more random, less than 1.0 '
     'makes melodies less random.')
 tf.app.flags.DEFINE_integer(
-    'beam_size', 1,
+    'beam_size', 4,
     'The beam size to use for beam search when generating melodies.')
 tf.app.flags.DEFINE_integer(
     'branch_factor', 1,
     'The branch factor to use for beam search when generating melodies.')
 tf.app.flags.DEFINE_integer(
-    'steps_per_iteration', 1,
+    'steps_per_iteration', 2,
     'The number of melody steps to take per beam search iteration.')
 tf.app.flags.DEFINE_string(
     'log', 'INFO',
@@ -250,7 +250,7 @@ def run_with_flags(generator):
 
 def main(unused_argv):
   """Saves bundle or runs generator based on flags."""
-  tf.logging.set_verbosity(FLAGS.log)
+  # tf.logging.set_verbosity(FLAGS.log)
 
   bundle = get_bundle()
 
