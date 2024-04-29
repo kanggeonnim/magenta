@@ -4,6 +4,7 @@
 # Video
 whisper/src/
 env/
+tmp/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
