@@ -8,13 +8,9 @@ router = APIRouter()
 
 @router.post("/music/magenta", response_model=ChordsResponseSch)
 async def generate_music_by_chords(req: ChordsRequestSch):
-    print(req.chords)
-    print(len(req.chords))
+    if len(req.chords.split()) < 2:
+        return JSONResponse(content={"error": f"At least two Chords are required"}, status_code=400)
 
-    # await improv_rnn_generate
     upload_key_list = improv_rnn_generate.main(req.chords)
-
-    if not upload_key_list:
-        return JSONResponse(content={"error": f"Invalid chords: {req}"}, status_code=400)
 
     return JSONResponse(content={"musicUrls": upload_key_list}, status_code=200)
