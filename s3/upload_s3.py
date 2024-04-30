@@ -19,12 +19,12 @@ AWS_CLOUD_FRONT = settings.AWS_CLOUD_FRONT
 
 def s3_connection():
     try:
-        s3 = boto3.client('s3',
-                          aws_access_key_id=AWS_ACCESS_KEY_ID,
-                          aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
-                          region_name=AWS_DEFAULT_REGION)
+        client = boto3.client('s3',
+                              aws_access_key_id=AWS_ACCESS_KEY_ID,
+                              aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
+                              region_name=AWS_DEFAULT_REGION)
         print("S3 bucket connected!")
-        return s3
+        return client
     except Exception as e:
         print(f"Error connecting to S3 bucket: {e}")
         return None
@@ -36,9 +36,9 @@ def generate_unique_id():
 
 def upload_file_to_s3(file_name, bucket, key):
     try:
-        s3 = s3_connection()
-        if s3:
-            s3.upload_file(file_name, bucket, key)  # 파일 저장
+        client = s3_connection()
+        if client:
+            client.upload_file(file_name, bucket, key)  # 파일 저장
             print("File uploaded to S3 successfully!")
             return True
         else:
@@ -67,7 +67,7 @@ def upload_s3(midi_file_list):
             # 업로드한 mp3 삭제
             if music_upload_successful:
                 os.remove(output_mp3_path)
-                
+
             s3_upload_key_list.append(f'https://{AWS_S3_BUCKET}.s3.{AWS_DEFAULT_REGION}.amazonaws.com/{s3_upload_key}')
 
         except Exception as e:
