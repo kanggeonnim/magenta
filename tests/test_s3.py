@@ -51,19 +51,6 @@ def empty_bucket(aws_credentials):
         moto_fake.stop()
 
 
-# @pytest.fixture
-# def s3():
-#     """Pytest fixture that creates the recipes bucket in
-#     the fake moto AWS account
-#
-#     Yields a fake boto3 s3 client
-#     """
-#     with mock_s3():
-#         s3 = boto3.client("s3")
-#         s3.create_bucket(Bucket=AWS_BUCKET_NAME)
-#         yield s3
-#
-
 def test_create_and_get(empty_bucket):
     with NamedTemporaryFile(mode='w', delete=False) as tmp:
         tmp.write('test file')
