@@ -75,11 +75,11 @@ tf.app.flags.DEFINE_string(
                          '"[60, -2, 60, -2, 67, -2, 67, -2]". If specified, this melody will be '
                          'used as the priming melody. If a priming melody is not specified, '
                          'melodies will be generated from scratch.')
-# tf.app.flags.DEFINE_string(
-#     'backing_chords', 'C G Am F C G F C',
-#     'A string representation of a chord progression, with chord symbols '
-#     'separated by spaces. For example: "C Dm7 G13 Cmaj7". The duration of each '
-#     'chord, in steps, is specified by the steps_per_chord flag.')
+tf.app.flags.DEFINE_string(
+    'backing_chords', '',
+    'A string representation of a chord progression, with chord symbols '
+    'separated by spaces. For example: "C Dm7 G13 Cmaj7". The duration of each '
+    'chord, in steps, is specified by the steps_per_chord flag.')
 tf.app.flags.DEFINE_string(
     'primer_midi', '',
     'The path to a MIDI file containing a melody that will be used as a '
@@ -257,12 +257,8 @@ def run_with_flags(generator):
 def main(chords):
     """Saves bundle or runs generator based on flags."""
     tf.logging.set_verbosity(FLAGS.log)
-    tf.app.flags.DEFINE_string(
-        'backing_chords', chords,
-        'A string representation of a chord progression, with chord symbols '
-        'separated by spaces. For example: "C Dm7 G13 Cmaj7". The duration of each '
-        'chord, in steps, is specified by the steps_per_chord flag.')
-
+    FLAGS.backing_chords = chords
+    
     bundle = get_bundle()
 
     if bundle:
