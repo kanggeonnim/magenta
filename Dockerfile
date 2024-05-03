@@ -16,7 +16,7 @@ COPY ./requirements.txt /code/requirements.txt
 RUN pip install --upgrade -r /code/requirements.txt
 
 #
-RUN pip install magenta
+RUN sudo apt-get install fluidsynth
 
 #
 COPY ./ /code/
