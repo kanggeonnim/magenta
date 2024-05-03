@@ -76,15 +76,25 @@ def upload_s3(midi_file_list):
     return s3_upload_key_list
 
 
-def midi_to_mp3(input_midi, output_mp3):
-    # MIDI to mp3
-    sound = AudioSegment.from_file(input_midi)
-    sound.export(output_mp3, format="mp3")
+def midi_to_mp3(midi_file, output_file):
+    # 임시 WAV 파일 생성
+    temp_wav = 'temp.wav'
 
-    # delete MIDI file
-    os.remove(input_midi)
+    # FluidSynth를 사용하여 MIDI 파일을 WAV로 변환
+    subprocess.call(
+        ['C:/tools/fluidsynth/bin/fluidsynth', '-ni', './resource/soundfont.sf2', midi_file, '-F',
+         temp_wav, '-g', '1.0'])
+
+    # Pydub를 사용하여 WAV를 MP3로 변환
+    sound = AudioSegment.from_wav(temp_wav)
+    sound.export(output_file, format="mp3")
+
+    # 임시 WAV, MIDI 파일 삭제
+    os.remove(temp_wav)
+    os.remove(midi_file)
 
 
 if __name__ == "__main__":
-    s3 = boto3.client('s3')
-    s3.download_file(AWS_S3_BUCKET, "music/aeb866db-e883-4903-8a30-c877e589c068.mp3", "download.mp3")
+    subprocess.call(
+        ['C:/tools/fluidsynth/bin/fluidsynth', '-ni', '../resource/soundfont.sf2',
+         '../resource/midi/genMusic.mid', '-F', 'temp4.wav', '-g', '1.0'])
