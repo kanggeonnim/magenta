@@ -81,8 +81,11 @@ def midi_to_mp3(midi_file, output_file):
     temp_wav = 'temp.wav'
 
     # FluidSynth를 사용하여 MIDI 파일을 WAV로 변환
+    fluid_path = subprocess.run(['which', 'fluidsynth'], capture_output=True, text=True)
+    fluid_path = fluid_path.stdout.split("\n")[0]
+
     subprocess.call(
-        ['C:/tools/fluidsynth/bin/fluidsynth', '-ni', './resource/soundfont.sf2', midi_file, '-F',
+        [fluid_path, '-ni', './resource/soundfont.sf2', midi_file, '-F',
          temp_wav, '-g', '1.0'])
 
     # Pydub를 사용하여 WAV를 MP3로 변환
@@ -95,6 +98,10 @@ def midi_to_mp3(midi_file, output_file):
 
 
 if __name__ == "__main__":
+    path = subprocess.run(['which', 'fluidsynth'], capture_output=True, text=True)
+    print("FLUID_PATH")
+    print(path.stdout.split("\n")[0])
+    fpath = path.stdout.split("\n")[0]
     subprocess.call(
-        ['C:/tools/fluidsynth/bin/fluidsynth', '-ni', '../resource/soundfont.sf2',
+        [path, '-ni', '../resource/soundfont.sf2',
          '../resource/midi/genMusic.mid', '-F', 'temp4.wav', '-g', '1.0'])
