@@ -15,4 +15,18 @@ async def generate_music_by_chords(chords: str = Query(..., description="Comma-s
 
     upload_key_list = improv_rnn_generate.main(chords)
 
-    return JSONResponse(content={"musicUrls": upload_key_list}, status_code=200)
+    # musicUrls 리스트에서 요소를 2개씩 묶기
+    grouped_data = group_list_elements(upload_key_list, 2)
+
+    return JSONResponse(content={"musicUrls": grouped_data}, status_code=200)
+
+
+def group_list_elements(input_list, chunk_size):
+    """
+    리스트의 요소를 주어진 크기로 묶어 새로운 리스트를 생성합니다.
+
+    :param input_list: 묶을 리스트
+    :param chunk_size: 묶을 크기
+    :return: 새로 생성된 리스트
+    """
+    return [{"midiUrl": input_list[i], "mp3Url": input_list[i + 1]} for i in range(0, len(input_list), chunk_size)]
