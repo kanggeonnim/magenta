@@ -52,16 +52,24 @@ def upload_s3(midi_file_list):
     s3_upload_key_list = []
     for path in midi_file_list:
         try:
-            # S3에 파일 업로드
-            unique_id = generate_unique_id()
             bucket = AWS_S3_BUCKET
             input_midi_path = MIDI_FILE_PATH + "/" + path
+
+            # S3에 MIDI 업로드
+            unique_id = generate_unique_id()
+            s3_upload_key = "midi/" + unique_id + ".mid"
+            upload_file_to_s3(input_midi_path, bucket, s3_upload_key)
+
+            s3_upload_key_list.append(f'https://{AWS_S3_BUCKET}.s3.{AWS_DEFAULT_REGION}.amazonaws.com/{s3_upload_key}')
+
+            # S3에 MP3 업로드
+            unique_id = generate_unique_id()
             output_mp3_path = MP3_FILE_PATH + "/" + unique_id + ".mp3"
 
             midi_to_mp3(input_midi_path, output_mp3_path)
 
-            # 노래 S3 업로드
-            s3_upload_key = "music/" + unique_id + ".mp3"
+            # mp3 S3 업로드
+            s3_upload_key = "mp3/" + unique_id + ".mp3"
             music_upload_successful = upload_file_to_s3(output_mp3_path, bucket, s3_upload_key)
 
             # 업로드한 mp3 삭제
